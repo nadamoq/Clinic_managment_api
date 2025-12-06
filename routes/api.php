@@ -22,9 +22,10 @@ Route::post('/login',[AuthController::class,'login']);
 
 
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum')
+->group(function(){
 
-    Route::apiResource('user',UserController::class);
+    Route::apiResource('user',UserController::class)->middleware('role:admin');
     Route::apiResource('patient',PatientController::class);
     Route::apiResource('appointment',AppointmentController::class);
     Route::apiResource('evaluation',EvaluationController::class);
@@ -43,7 +44,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
         });
     });
-    Route::controller(NotificationController::class)->prefix('notification')
+    Route::controller(NotificationController::class)
+    ->prefix('notification')
     ->group(function()
     {
 
@@ -55,12 +57,14 @@ Route::middleware('auth:sanctum')->group(function(){
      
     });
    
-    Route::controller(ReportController::class)->prefix('patient')
+    Route::controller(ReportController::class)
+    ->prefix('patient')
+    ->middleware('role:receptionist,admin')
     ->group(function()
     {
 
-        Route::get('/excel','export');
-        Route::get('/report','report');
+        Route::post('/excel','export');
+        Route::post('/report','report');
         Route::post('/import','import');
 
     });

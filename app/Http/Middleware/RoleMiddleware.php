@@ -17,7 +17,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next,$role): Response
     {
-        if(!Auth::user()->role==$role){
+        if(!(Auth::user()->role==$role)){
 
             return response()->json(['message'=>'unauthorized operation '],HttpResponse::HTTP_UNAUTHORIZED);
         }

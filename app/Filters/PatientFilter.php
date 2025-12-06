@@ -31,11 +31,7 @@ class PatientFilter
             $query->where('blood_type',$filters['blood_type']);
 
         }
-          if(auth()->user()->isStudent()){
-
-            $query->whereDoesntHave('appointment');
-
-        }
+         
         return $query;
     }
 
