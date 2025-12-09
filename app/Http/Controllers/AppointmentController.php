@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Actions\GetAllAppointmentAction;
 
 use App\Http\Requests\StoreAppointmentRequest;
+use App\Http\Requests\SuggestAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Models\Appointment;
-
+use App\Models\Patient;
 use App\Services\AppointmentService;
+use App\Services\AppointmentSuggestionService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AppointmentController extends Controller
@@ -70,6 +73,14 @@ class AppointmentController extends Controller
         $this->authorize('delete',$appointment);
         $result=$service->delete($appointment);
         return response()->json($result['message'],$result['status']);  
+
+    }
+    public function suggest(SuggestAppointmentRequest $request,AppointmentSuggestionService $service){
+        
+        $patient=Patient::findOrFail($request->patient_id);
+        $suggested=$service->Suggest($request->date,$patient->procedure->duration_minutes);
+
+        return response()->json($suggested);
 
     }
 }

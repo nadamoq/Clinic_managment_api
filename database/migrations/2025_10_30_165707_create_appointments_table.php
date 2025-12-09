@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignId('supervisor_id')->constrained('supervisors')->onDelete('cascade');
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');         
-            //لازم نعمل رووم اي دي فورين كييييي     
             $table->timestamps();
         });
     }

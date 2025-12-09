@@ -6,12 +6,13 @@ use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -25,11 +26,25 @@ Route::post('/login',[AuthController::class,'login']);
 Route::middleware('auth:sanctum')
 ->group(function(){
 
-    Route::apiResource('user',UserController::class)->middleware('role:admin');
+    
     Route::apiResource('patient',PatientController::class);
     Route::apiResource('appointment',AppointmentController::class);
     Route::apiResource('evaluation',EvaluationController::class);
     Route::post('profile/image',[ProfileController::class,'updateAvatar']);
+    Route::delete('profile/image',[ProfileController::class,'delete']);
+    Route::post('appointment/suggest',[AppointmentController::class,'suggest']);
+  
+
+    Route::middleware('role:admin')
+    ->group(function(){
+
+        Route::apiResource('supervisor',SupervisorController::class);
+        Route::apiResource('student',StudentController::class);
+        Route::apiResource('receptionist',ReceptionistController::class);
+        Route::apiResource('user',UserController::class);
+
+    });
+
 
     Route::controller(AuthController::class)
     ->group(function()
@@ -40,10 +55,12 @@ Route::middleware('auth:sanctum')
         Route::prefix('email/verify')->group(function(){
 
             Route::get('/send',[AuthController::class,'sendVerificationEmail'])->name('sendEmailVerification');
-            Route::get('/{id}/{hash}',[AuthController::class,'verify'])->name('verifiction.verify');
+            Route::get('/{id}/{hash}',[AuthController::class,'verify'])->name('verifiction.verify')->middleware('signed');
 
         });
     });
+
+
     Route::controller(NotificationController::class)
     ->prefix('notification')
     ->group(function()
@@ -57,9 +74,10 @@ Route::middleware('auth:sanctum')
      
     });
    
+
     Route::controller(ReportController::class)
     ->prefix('patient')
-    ->middleware('role:receptionist,admin')
+    ->middleware('role:receptionist,admin','throttle:2')
     ->group(function()
     {
 

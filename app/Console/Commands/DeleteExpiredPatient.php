@@ -31,10 +31,11 @@ class DeleteExpiredPatient extends Command
         $three_months_ago=Carbon::now()->subMonths(3);
         
         Patient::with([
-                        'appointment'=>fn($q)=>$q->completed()
-                                    ->get()
-                    ])
+                    'appointment'=>fn($q)=>$q->completed()
+                                ->get()
+                    ]) 
                     ->where('created_at','<=',$three_months_ago)
                     ->delete();
     }
+                   
 }
