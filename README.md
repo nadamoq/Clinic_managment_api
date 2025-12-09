@@ -21,6 +21,8 @@ This system provides a clean, efficient workflow for all roles in the clinic:
 - Students can book appointments with patients.
 - Automatic calculation of end-time using helper functions.
 - Supports **pending, processing, completed, and canceled** states.
+- Suggests the earliest available time slot for a new appointment, ensuring it does **not conflict** with any existing bookings for the same supervisor.
+ 
 
 ### 👨‍🎓 Student & Supervisor Module
 - Students linked to users with dedicated profiles.
