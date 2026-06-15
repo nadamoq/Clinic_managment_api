@@ -1,5 +1,4 @@
- Dental Clinical Management Platform
-
+ Dental Clinical Management Api
 A  Laravel-based api designed to streamline the management of 
 **students, patients, appointments, supervisors, evaluations, notifications, and clinic operations** 
 in dental faculties and clinical training environments.
@@ -77,7 +76,7 @@ This system provides a clean, efficient workflow for all roles in the clinic:
 
 ```bash
 git clone <repository-link>
-cd dental-clinic-platform
+cd clinical_managment_api
 composer install
 cp .env.example .env
 php artisan key:generate
