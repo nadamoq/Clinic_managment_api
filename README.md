@@ -1,6 +1,6 @@
  Dental Clinical Management Platform
 
-A full-stack Laravel-based platform designed to streamline the management of 
+A  Laravel-based api designed to streamline the management of 
 **students, patients, appointments, supervisors, evaluations, notifications, and clinic operations** 
 in dental faculties and clinical training environments.
 
